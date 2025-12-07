@@ -2,6 +2,8 @@
 
 This project aims to improve the results of the sentiment analysis model **FinBERT**, as described in the paper "FinBERT: Financial Sentiment Analysis with Pre-trained Language Models" by Dogu Araci (2019).
 
+By engineering a custom Multi-Layer Fusion architecture with RoBERTa, improved at 87.7% accuracy and 94.49% negative recall compared to the original FinBERT baseline. The new architecture aims to address the information bottleneck in standard BERT models by preserving both low-level syntactic cues and high-level semantic meaning.
+
 ## Original Paper
 * **Title:** FinBERT: Financial Sentiment Analysis with Pre-trained Language Models
 * **Author:** Dogu Tan Araci
@@ -21,25 +23,7 @@ This code was developed and tested using **Google Colab** with a **T4 GPU**.
     * `matplotlib`
     * `numpy`
 
-## How to Run
-1.  **Upload:** Upload the Jupyter Notebook (`.ipynb`) file provided in this repository to Google Colab.
-2.  **Select GPU:** Ensure a GPU runtime is selected (T4 GPU).
-3.  **Run All:** Execute all cells sequentially from top to bottom.
+## Dataset Handling
+Used the `atrost/financial_phrasebank` dataset from Hugging Face as the originally cited versions (`takala/financial_phrasebank`) gave loading issues with current library versions.
 
-## Reproducibility
-* **Seeds:** Random seeds (`seed=42`) are set for dataset splitting (`train_test_split`) and within the `TrainingArguments` to ensure consistent results across runs.
-* **Dataset:** The `atrost/financial_phrasebank` dataset is used, and the data is programmatically re-split to match the paper's 64% train / 16% validation / 20% test partition.
-
-## Attribution
-* This work is a improvement based on the original FinBERT paper by Dogu Araci.
-* The overall code structure for loading data, tokenizing, training, and evaluation follows standard examples and best practices from the Hugging Face `transformers` and `datasets` libraries documentation.
-
-## Key Modifications for Reproduction
-To accurately reproduce and improve upon the paper's methodology, the following specific techniques were implemented:
-
-1.  **Slanted Triangular Learning Rate (STLR):** Implemented using the `lr_scheduler_type="linear"` and `warmup_ratio=0.2` parameters within `TrainingArguments`, matching the paper's description.
-2.  **Discriminative Fine-Tuning (DFT):** Implemented by subclassing the `Trainer` class (`DiscriminativeLRsTrainer`) to create separate parameter groups for the BERT base model and the classification head, applying a lower learning rate (0.85 discrimination rate) to the base model parameters as specified in the paper.
-3.  **Gradual Unfreezing (GU):** Implemented using a custom `TrainerCallback` (`GradualUnfreezingCallback`) that unfreezes one layer of the BERT encoder every third of a training epoch, starting from the top layer, as described in the paper.
-4.  **Dataset Handling:**
-    * Used the `atrost/financial_phrasebank` dataset from Hugging Face as the originally cited versions (`takala/financial_phrasebank`) gave loading issues with current library versions.
-    * Combined the predefined splits (`train`, `validation`, `test`) from `atrost/financial_phrasebank` and then re-split the combined data using `train_test_split` with `test_size=0.2` twice (seed=42) to achieve the 64% Train/16% Validation/20% Test partition described in the paper.
+Combined the predefined splits (`train`, `validation`, `test`) from `atrost/financial_phrasebank` and then re-split the combined data using `train_test_split` with `test_size=0.2` twice (seed=42) to achieve the 64% Train/16% Validation/20% Test partition described in the paper.
