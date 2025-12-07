@@ -1,6 +1,6 @@
-# FinBERT Reproduction
+# FinBERT Optimization
 
-This project aims to reproduce the results of the sentiment analysis model **FinBERT**, as described in the paper "FinBERT: Financial Sentiment Analysis with Pre-trained Language Models" by Dogu Araci (2019).
+This project aims to improve the results of the sentiment analysis model **FinBERT**, as described in the paper "FinBERT: Financial Sentiment Analysis with Pre-trained Language Models" by Dogu Araci (2019).
 
 ## Original Paper
 * **Title:** FinBERT: Financial Sentiment Analysis with Pre-trained Language Models
@@ -31,11 +31,11 @@ This code was developed and tested using **Google Colab** with a **T4 GPU**.
 * **Dataset:** The `atrost/financial_phrasebank` dataset is used, and the data is programmatically re-split to match the paper's 64% train / 16% validation / 20% test partition.
 
 ## Attribution
-* This work is a reproduction based on the original FinBERT paper by Dogu Araci.
+* This work is a improvement based on the original FinBERT paper by Dogu Araci.
 * The overall code structure for loading data, tokenizing, training, and evaluation follows standard examples and best practices from the Hugging Face `transformers` and `datasets` libraries documentation.
 
 ## Key Modifications for Reproduction
-To accurately reproduce the paper's methodology, the following specific techniques were implemented:
+To accurately reproduce and improve upon the paper's methodology, the following specific techniques were implemented:
 
 1.  **Slanted Triangular Learning Rate (STLR):** Implemented using the `lr_scheduler_type="linear"` and `warmup_ratio=0.2` parameters within `TrainingArguments`, matching the paper's description.
 2.  **Discriminative Fine-Tuning (DFT):** Implemented by subclassing the `Trainer` class (`DiscriminativeLRsTrainer`) to create separate parameter groups for the BERT base model and the classification head, applying a lower learning rate (0.85 discrimination rate) to the base model parameters as specified in the paper.
